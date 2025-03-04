@@ -1,5 +1,8 @@
-import { useState } from 'react';
-import { MessageCircle, Shield, Star } from 'lucide-react';
+import { useState, useCallback, useEffect } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
+import { ChevronLeft, ChevronRight, Star, MessageCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import AutoPlay from 'embla-carousel-autoplay';
 
 // Checker data
 const checkers = [
@@ -7,123 +10,255 @@ const checkers = [
     id: 1,
     name: 'Trinity',
     age: 22,
-    location: 'Florida',
+    location: 'Tampa, FL',
     rating: 4.9,
-    reviews: 127,
+    reviews: 40,
     imgUrl: '/checker-images/trinity-3.jpg',
+    speciality: 'High Fold Rate',
+    providerUrl: 'https://www.getlazo.app/providers/clmumc0z70001l808m08abq4z'
   },
   {
     id: 2,
     name: 'Zelgin',
     age: 22,
-    location: 'New York',
-    rating: 4.8,
-    reviews: 93,
+    location: 'New York, NY',
+    rating: 5,
+    reviews: 11,
     imgUrl: '/checker-images/zelgin-3.jpg',
+    speciality: 'Instagram Specialist',
+    providerUrl: 'https://www.getlazo.app/providers/cltq9zfrr0006wgsuf8gmhzxa'
   },
   {
     id: 3,
     name: 'Valentina',
     age: 26,
-    location: 'San Diego',
+    location: 'San Diego, CA',
     rating: 4.9,
-    reviews: 108,
+    reviews: 15,
     imgUrl: '/checker-images/valentina-3.jpg',
+    speciality: 'Smooth Talker',
+    providerUrl: 'https://www.getlazo.app/providers/cm4txr36m00028oyi8imjwztp'
   },
   {
     id: 4,
     name: 'Ryan',
-    age: 24,
-    location: 'Florida',
-    rating: 4.7,
-    reviews: 89,
+    age: 34,
+    location: 'Miami, FL',
+    rating: 5,
+    reviews: 8,
     imgUrl: '/checker-images/ryan-3.jpg',
+    speciality: 'Investigation Expert',
+    providerUrl: 'https://www.getlazo.app/providers/cm477w5ec0002kcnb7kwtw7h3'
+  },
+  {
+    id: 5,
+    name: 'Sofia',
+    age: 28,
+    location: 'Miami, FL',
+    rating: 5,
+    reviews: 12,
+    imgUrl: '/checker-images/sofia.jpg',
+    speciality: 'Charismatic & Persuasive',
+    providerUrl: 'https://www.getlazo.app/providers/cm7aeze5z00025r5ejjtdelyy'
+  },
+  {
+    id: 6,
+    name: 'Malik',
+    age: 22,
+    location: 'Montreal, QC',
+    rating: 4.9,
+    reviews: 7,
+    imgUrl: '/checker-images/malik.jpg',
+    speciality: 'Fast Responder',
+    providerUrl: 'https://www.getlazo.app/providers/cm7k8a4jj0002i309fuqv2yxm'
+  },
+  {
+    id: 7,
+    name: 'Rose',
+    age: 24,
+    location: 'Chicago, IL',
+    rating: 4.9,
+    reviews: 8,
+    imgUrl: '/checker-images/rose.jpg',
+    speciality: 'Elite Seduction Skills',
+    providerUrl: 'https://www.getlazo.app/providers/cm79gku9r0002av9xiqrkx8jk'
   },
 ];
 
 const CheckersSection = () => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: 'center',
+    dragFree: false,
+    containScroll: 'trimSnaps',
+    skipSnaps: false
+  }, [
+    AutoPlay({
+      delay: 3000,
+      stopOnInteraction: false,
+      stopOnMouseEnter: false,
+      playOnInit: true,
+      rootNode: (emblaRoot) => emblaRoot.parentElement
+    })
+  ]);
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
+
+  const onInit = useCallback(() => {
+    if (!emblaApi) return;
+    setScrollSnaps(emblaApi.scrollSnapList());
+  }, [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    onInit();
+    onSelect();
+    emblaApi.on('reInit', onInit);
+    emblaApi.on('reInit', onSelect);
+    emblaApi.on('select', onSelect);
+  }, [emblaApi, onInit, onSelect]);
+
   return (
     <section id="checkers" className="py-16 md:py-24 relative overflow-hidden">
-      <div className="container mx-auto px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="container mx-auto px-4"
+      >
         <div className="text-center mb-12 md:mb-16">
-          <span className="inline-block py-1 px-3 mb-4 text-xs font-medium text-lazo-bordeaux bg-lazo-pink/30 rounded-full">
-            Top-Rated Checkers
+          <span className="inline-block py-1 px-3 mb-4 caption font-medium text-lazo-bordeaux bg-lazo-pink/30 rounded-full">
+            Our Experts
           </span>
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold mb-4 text-lazo-bordeaux">
-          Chat with Verified Loyalty Checkers
+          <h2 className="text-lazo-bordeaux mb-4">
+            Chat with our Certified Checkers
           </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Our experts are trained to conduct loyalty tests professionally and discreetly.
+          </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-6 md:gap-8">
-          {checkers.map((checker) => (
-            <div key={checker.id} className="checker-card w-36 md:w-44">
-              <div className="relative h-48 md:h-56 bg-lazo-pink/10 overflow-hidden rounded-2xl">
-                <img
-                  src={checker.imgUrl}
-                  alt={checker.name}
-                  className="w-full h-full object-cover transition-transform hover:scale-105"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3">
-                  <div className="text-white">
-                    <h3 className="font-medium text-lg">{checker.name}, {checker.age}</h3>
-                    <p className="text-xs opacity-90">{checker.location}</p>
-                  </div>
+        <div className="relative max-w-[95vw] md:max-w-[85vw] mx-auto">
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex -ml-4">
+              {checkers.map((checker, index) => (
+                <div
+                  key={checker.id}
+                  className="flex-[0_0_100%] min-w-0 md:flex-[0_0_60%] lg:flex-[0_0_50%] pl-4"
+                >
+                  <motion.div
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className={`relative group transition-all duration-500 ${
+                      selectedIndex === index ? 'scale-100' : 'scale-95 opacity-70'
+                    }`}
+                  >
+                    <div className="aspect-[3/4] overflow-hidden rounded-2xl shadow-2xl relative">
+                      <a
+                        href={checker.providerUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block w-full h-full"
+                      >
+                        <img
+                          src={checker.imgUrl}
+                          alt={checker.name}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                        
+                        <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                          <div className="flex flex-col space-y-4">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <h3 className="mb-1 drop-shadow-sm">{checker.name}, {checker.age}</h3>
+                                <p className="text-white/90 drop-shadow-sm small-text">{checker.location}</p>
+                              </div>
+                              <div className="text-right">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <Star className="w-5 h-5 fill-current text-yellow-400 drop-shadow" />
+                                  <span className="text-xl drop-shadow-sm">{checker.rating}</span>
+                                </div>
+                                <p className="caption text-white/90 drop-shadow-sm">{checker.reviews} reviews</p>
+                              </div>
+                            </div>
+                            <p className="text-white/90 font-light drop-shadow-sm">{checker.speciality}</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </motion.div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={scrollPrev}
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-lazo-bordeaux hover:bg-white transition-all z-10"
+            aria-label="Previous checker"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={scrollNext}
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-lazo-bordeaux hover:bg-white transition-all z-10"
+            aria-label="Next checker"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </motion.button>
+
+          <div className="flex justify-center gap-3 mt-8">
+            {scrollSnaps.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollTo(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === selectedIndex
+                    ? 'w-8 bg-lazo-bordeaux shadow-sm'
+                    : 'w-2 bg-lazo-bordeaux/30 hover:bg-lazo-bordeaux/50'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
 
         <div className="mt-12 flex justify-center">
-          <a 
+          <motion.a 
             href="https://www.getlazo.app/providers" 
             target="_blank" 
-            rel="noopener noreferrer" 
-            className="py-3 px-6 rounded-full bg-lazo-bordeaux text-white font-medium transition-all hover:bg-lazo-bordeaux-light hover:shadow-lg"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center px-8 py-4 rounded-full bg-lazo-bordeaux text-white font-medium transition-all hover:bg-lazo-bordeaux-light shadow-lg hover:shadow-xl"
           >
-            See all Checkers
-          </a>
+            View all our Checkers
+            <MessageCircle size={20} className="ml-2" />
+          </motion.a>
         </div>
-      </div>
-
-      <div className="mt-16 md:mt-24 bg-lazo-pink/10 py-10 md:py-16 relative">
-        <div className="container mx-auto px-4 text-center">
-          <h3 id="how-it-works" className="text-3xl font-playfair font-bold mb-10 text-lazo-bordeaux">
-            How the Loyalty Test works at Lazo
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              { step: "1", title: "Pick Your Checker", description: "Choose from our verified loyalty checkers based on your preferences." },
-              { step: "2", title: "Share Key Details", description: "Tell us about your partner, and we’ll tailor the approach to fit your needs." },
-              { step: "3", title: "Stay in the Loop", description: "Chat with your checker, receive real-time updates, and adjust the strategy as needed." },
-              { step: "4", title: "Get Your Answer", description: "Receive clear results with screenshots and insights Lazo helps you make sense of it all." },
-            ].map(({ step, title, description }) => (
-              <div key={step} className="bg-white p-6 rounded-xl shadow-lg">
-                <div className="w-14 h-14 rounded-full bg-lazo-bordeaux text-white flex items-center justify-center text-2xl font-bold mb-4 mx-auto">
-                  {step}
-                </div>
-                <h4 className="text-lg font-medium mb-2">{title}</h4>
-                <p className="text-gray-600 text-sm">{description}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-10">
-            <a 
-              href="https://www.getlazo.app/providers" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="inline-flex items-center justify-center py-3 px-6 rounded-full bg-lazo-bordeaux text-white font-medium transition-all hover:bg-lazo-bordeaux-light"
-            >
-              Start your test now
-              <MessageCircle size={18} className="ml-2" />
-            </a>
-          </div>
-        </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
 
 export default CheckersSection;
+

@@ -1,32 +1,24 @@
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import CheckersSection from "@/components/CheckersSection";
-import PressSection from "@/components/PressSection";
-import Testimonials from "@/components/Testimonials";
-import FaqSection from "@/components/FaqSection";
-import Footer from "@/components/Footer";
-import { useEffect } from "react";
+import { useEffect } from 'react';
+import HeroSection from '@/components/HeroSection';
+import CheckersSection from '@/components/CheckersSection';
+import Testimonials from '@/components/Testimonials';
+import FaqSection from '@/components/FaqSection';
+import PressSection from '@/components/PressSection';
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+import BackgroundShapes from '@/components/BackgroundShapes';
+import HowItWorksSection from '@/components/HowItWorksSection';
 
 const Index = () => {
   useEffect(() => {
-    const handleAnchorClick = (e: Event) => {
-      const target = e.target as HTMLElement;
-      const anchor = target.closest('a');
-      
-      if (anchor && anchor.hash && anchor.hash.startsWith('#')) {
+    // Handle anchor links with smooth scroll
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLAnchorElement;
+      if (target.hash && target.hash.startsWith('#')) {
         e.preventDefault();
-        const id = anchor.hash.slice(1);
-        const element = document.getElementById(id);
-        
+        const element = document.querySelector(target.hash);
         if (element) {
-          const offset = 80; // Offset for fixed header
-          const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
+          element.scrollIntoView({ behavior: 'smooth' });
         }
       }
     };
@@ -36,13 +28,21 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="bg-lazo-offwhite min-h-screen">
+    <div className="relative min-h-screen bg-white">
+      <BackgroundShapes />
       <Navbar />
-      <HeroSection />
-      <CheckersSection />
-      <PressSection />
-      <Testimonials />
-      <FaqSection />
+      
+      <main className="relative">
+        <div className="space-y-0">
+          <HeroSection />
+          <CheckersSection />
+          <HowItWorksSection />
+          <PressSection />
+          <Testimonials />
+          <FaqSection />
+        </div>
+      </main>
+
       <Footer />
     </div>
   );

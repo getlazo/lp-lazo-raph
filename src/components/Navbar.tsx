@@ -21,8 +21,16 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <a href="#" className="flex items-center">
-          <span className="text-2xl font-playfair font-bold text-lazo-bordeaux">Lazo</span>
+        <a href="/" className="flex items-center space-x-2">
+          <img
+            src="/images/logo.png"
+            alt="Lazo Logo"
+            className="h-8 w-auto"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+          />
+          <span className="text-xl font-bold text-lazo-bordeaux">LAZO</span>
         </a>
         
         <div className="hidden md:flex space-x-8">

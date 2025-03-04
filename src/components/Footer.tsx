@@ -18,7 +18,15 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
-            <h3 className="text-2xl font-playfair font-bold mb-4">Lazo</h3>
+            <div className="flex items-center space-x-2 mb-4">
+              <img
+                src="/images/logo-2.png"
+                alt="Lazo Logo"
+                className="h-8 w-auto"
+                loading="lazy"
+              />
+              <h3 className="text-2xl font-playfair font-bold">Lazo</h3>
+            </div>
             <p className="text-white/80 mb-6 max-w-md">
               Discreetly test your partner's loyalty and find peace of mind. Our professional Checkers help you discover the truth about your relationship.
             </p>
@@ -100,6 +108,16 @@ const Footer = () => {
                   className="text-white/80 hover:text-white transition-colors"
                 >
                   Cookie Policy
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://intercom.help/lazo-help-center/en/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-white/80 hover:text-white transition-colors"
+                >
+                  Help Center
                 </a>
               </li>
             </ul>
