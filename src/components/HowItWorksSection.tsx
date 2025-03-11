@@ -13,31 +13,24 @@ interface Step {
 const steps: Step[] = [
   {
     step: "1",
-    title: "Choose Your Checker",
-    description: "Select from our verified loyalty checkers based on your preferences.",
+    title: "Pick Your Checker",
+    description: "Select a loyalty checker based on your partner's tastes.",
     gradient: "from-pink-400 to-pink-500",
     delay: 0
   },
   {
     step: "2",
-    title: "Share Details",
-    description: "Provide information about your partner, and we'll customize the approach.",
+    title: "Set Up Your Test",
+    description: "Provide instructions to your checker.",
     gradient: "from-purple-400 to-purple-500",
     delay: 0.2
   },
   {
     step: "3",
-    title: "Monitor Progress",
-    description: "Stay updated in real-time as our checker conducts the loyalty test.",
+    title: "Discreet Results",
+    description: "Your loyalty test remains 100% confidential. We never share private information, and everything stays anonymous.",
     gradient: "from-blue-400 to-blue-500",
     delay: 0.4
-  },
-  {
-    step: "4",
-    title: "Get Results",
-    description: "Receive detailed findings with evidence and professional insights.",
-    gradient: "from-green-400 to-green-500",
-    delay: 0.6
   }
 ];
 
@@ -51,7 +44,7 @@ const HowItWorksSection = () => {
 
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      const step = Math.min(3, Math.floor(latest * 4));
+      const step = Math.min(2, Math.floor(latest * 3));
       setActiveStep(step);
     });
 
@@ -59,12 +52,12 @@ const HowItWorksSection = () => {
   }, [scrollYProgress]);
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-br from-lazo-pink/5 to-lazo-pink/20 relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-gradient-to-br from-lazo-pink/5 to-lazo-pink/20 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.8),transparent_70%)]" />
       
       <div className="container mx-auto px-4 relative z-10" ref={containerRef}>
-        <div className="text-center mb-16 bg-white/0">
-          <div className="flex justify-center mb-8">
+        <div className="text-center mb-12 bg-white/0">
+          <div className="flex justify-center mb-6">
             <img
               src="/images/logo.png"
               alt="Lazo Logo"
@@ -78,13 +71,13 @@ const HowItWorksSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             id="how-it-works"
-            className="text-lazo-bordeaux mb-4 leading-tight"
+            className="text-lazo-bordeaux mb-4 leading-tight font-bold"
             style={{ 
               textShadow: 'none',
               textRendering: 'optimizeLegibility'
             }}
           >
-            How Does the Loyalty Test Work at Lazo?
+            How Does A Loyalty Test Work?
           </motion.h2>
         </div>
 

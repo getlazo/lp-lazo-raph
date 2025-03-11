@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { ChevronLeft, ChevronRight, Star, MessageCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import AutoPlay from 'embla-carousel-autoplay';
 
 // Checker data
@@ -12,7 +12,7 @@ const checkers = [
     age: 22,
     location: 'Tampa, FL',
     rating: 4.9,
-    reviews: 40,
+    reviews: 84,
     imgUrl: '/checker-images/trinity-3.jpg',
     speciality: 'High Fold Rate',
     providerUrl: 'https://www.getlazo.app/providers/clmumc0z70001l808m08abq4z'
@@ -22,8 +22,8 @@ const checkers = [
     name: 'Zelgin',
     age: 22,
     location: 'New York, NY',
-    rating: 5,
-    reviews: 11,
+    rating: 5.0,
+    reviews: 65,
     imgUrl: '/checker-images/zelgin-3.jpg',
     speciality: 'Instagram Specialist',
     providerUrl: 'https://www.getlazo.app/providers/cltq9zfrr0006wgsuf8gmhzxa'
@@ -34,7 +34,7 @@ const checkers = [
     age: 26,
     location: 'San Diego, CA',
     rating: 4.9,
-    reviews: 15,
+    reviews: 89,
     imgUrl: '/checker-images/valentina-3.jpg',
     speciality: 'Smooth Talker',
     providerUrl: 'https://www.getlazo.app/providers/cm4txr36m00028oyi8imjwztp'
@@ -42,9 +42,9 @@ const checkers = [
   {
     id: 4,
     name: 'Ryan',
-    age: 34,
+    age: 61,
     location: 'Miami, FL',
-    rating: 5,
+    rating: 5.0,
     reviews: 8,
     imgUrl: '/checker-images/ryan-3.jpg',
     speciality: 'Investigation Expert',
@@ -56,7 +56,7 @@ const checkers = [
     age: 28,
     location: 'Miami, FL',
     rating: 5,
-    reviews: 12,
+    reviews: 56,
     imgUrl: '/checker-images/sofia.jpg',
     speciality: 'Charismatic & Persuasive',
     providerUrl: 'https://www.getlazo.app/providers/cm7aeze5z00025r5ejjtdelyy'
@@ -67,7 +67,7 @@ const checkers = [
     age: 22,
     location: 'Montreal, QC',
     rating: 4.9,
-    reviews: 7,
+    reviews: 48,
     imgUrl: '/checker-images/malik.jpg',
     speciality: 'Fast Responder',
     providerUrl: 'https://www.getlazo.app/providers/cm7k8a4jj0002i309fuqv2yxm'
@@ -78,7 +78,7 @@ const checkers = [
     age: 24,
     location: 'Chicago, IL',
     rating: 4.9,
-    reviews: 8,
+    reviews: 67,
     imgUrl: '/checker-images/rose.jpg',
     speciality: 'Elite Seduction Skills',
     providerUrl: 'https://www.getlazo.app/providers/cm79gku9r0002av9xiqrkx8jk'
@@ -139,24 +139,21 @@ const CheckersSection = () => {
         className="container mx-auto px-4"
       >
         <div className="text-center mb-12 md:mb-16">
-          <span className="inline-block py-1 px-3 mb-4 caption font-medium text-lazo-bordeaux bg-lazo-pink/30 rounded-full">
-            Our Experts
-          </span>
-          <h2 className="text-lazo-bordeaux mb-4">
-            Chat with our Certified Checkers
+          <h2 className="text-4xl md:text-5xl text-lazo-bordeaux mb-6 font-bold">
+            Chat with our Experts in Loyalty Testing
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Our experts are trained to conduct loyalty tests professionally and discreetly.
           </p>
         </div>
 
-        <div className="relative max-w-[95vw] md:max-w-[85vw] mx-auto">
+        <div className="relative max-w-[70vw] md:max-w-[65vw] lg:max-w-[55vw] mx-auto">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex -ml-4">
               {checkers.map((checker, index) => (
                 <div
                   key={checker.id}
-                  className="flex-[0_0_100%] min-w-0 md:flex-[0_0_60%] lg:flex-[0_0_50%] pl-4"
+                  className="flex-[0_0_100%] min-w-0 md:flex-[0_0_48%] lg:flex-[0_0_38%] pl-4"
                 >
                   <motion.div
                     initial={{ scale: 0.95, opacity: 0 }}
@@ -166,7 +163,7 @@ const CheckersSection = () => {
                       selectedIndex === index ? 'scale-100' : 'scale-95 opacity-70'
                     }`}
                   >
-                    <div className="aspect-[3/4] overflow-hidden rounded-2xl shadow-2xl relative">
+                    <div className="aspect-[6/7] overflow-hidden rounded-2xl shadow-2xl relative">
                       <a
                         href={checker.providerUrl}
                         target="_blank"
@@ -190,7 +187,7 @@ const CheckersSection = () => {
                               <div className="text-right">
                                 <div className="flex items-center gap-2 mb-1">
                                   <Star className="w-5 h-5 fill-current text-yellow-400 drop-shadow" />
-                                  <span className="text-xl drop-shadow-sm">{checker.rating}</span>
+                                  <span className="text-xl drop-shadow-sm">{checker.rating.toFixed(1)}</span>
                                 </div>
                                 <p className="caption text-white/90 drop-shadow-sm">{checker.reviews} reviews</p>
                               </div>
@@ -210,20 +207,20 @@ const CheckersSection = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={scrollPrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-lazo-bordeaux hover:bg-white transition-all z-10"
+            className="absolute -left-12 md:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-lazo-bordeaux hover:bg-white transition-all z-10"
             aria-label="Previous checker"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
           </motion.button>
 
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={scrollNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-lazo-bordeaux hover:bg-white transition-all z-10"
+            className="absolute -right-12 md:-right-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-lazo-bordeaux hover:bg-white transition-all z-10"
             aria-label="Next checker"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
           </motion.button>
 
           <div className="flex justify-center gap-3 mt-8">

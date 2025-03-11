@@ -20,12 +20,12 @@ const Footer = () => {
           <div className="md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <img
-                src="/images/logo-2.png"
+                src="/images/LazoOnPurple.png"
                 alt="Lazo Logo"
                 className="h-8 w-auto"
                 loading="lazy"
               />
-              <h3 className="text-2xl font-playfair font-bold">Lazo</h3>
+              
             </div>
             <p className="text-white/80 mb-6 max-w-md">
               Discreetly test your partner's loyalty and find peace of mind. Our professional Checkers help you discover the truth about your relationship.

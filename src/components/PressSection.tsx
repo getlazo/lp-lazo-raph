@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import { useEffect, useState, useCallback } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import AutoPlay from 'embla-carousel-autoplay';
 
 const pressArticles = [
   {
@@ -29,44 +28,84 @@ const pressArticles = [
 ];
 
 const PressSection = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: 'center',
+    dragFree: false,
+    containScroll: 'trimSnaps',
+    skipSnaps: false
+  }, [
+    AutoPlay({
+      delay: 3000,
+      stopOnInteraction: false,
+      stopOnMouseEnter: false,
+      playOnInit: true,
+      rootNode: (emblaRoot) => emblaRoot.parentElement
+    })
+  ]);
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
+
+  const onInit = useCallback(() => {
+    if (!emblaApi) return;
+    setScrollSnaps(emblaApi.scrollSnapList());
+  }, [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
 
   useEffect(() => {
-    // Vérification des logos
-    pressArticles.forEach(article => {
-      fetch(article.logo)
-        .catch(() => {
-          console.error(`Logo not found: ${article.logo}`);
-        });
-    });
+    if (!emblaApi) return;
 
-    // Auto-rotation
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % pressArticles.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, []);
+    onInit();
+    onSelect();
+    emblaApi.on('reInit', onInit);
+    emblaApi.on('reInit', onSelect);
+    emblaApi.on('select', onSelect);
+  }, [emblaApi, onInit, onSelect]);
 
   return (
     <section className="py-16 md:py-24 bg-white relative overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12 md:mb-16 animate-fade-in">
-          <span className="inline-block py-1 px-3 mb-4 text-xs font-medium text-lazo-bordeaux bg-lazo-pink/30 rounded-full">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="container mx-auto px-4"
+      >
+        <div className="text-center mb-12 md:mb-16">
+          <span className="inline-block py-2 px-6 mb-4 text-lg font-medium text-lazo-bordeaux bg-lazo-pink/30 rounded-full">
             Press Coverage
           </span>
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold mb-4 text-lazo-bordeaux">
+          <h2 className="text-4xl md:text-5xl text-lazo-bordeaux mb-6 font-bold">
             They talk about us
           </h2>
         </div>
 
-        <div className="max-w-5xl mx-auto">
-          <Carousel className="w-full">
-            <CarouselContent>
+        <div className="relative max-w-[85vw] md:max-w-5xl mx-auto">
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex -ml-4">
               {pressArticles.map((article, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <div className="h-full p-4">
-                    <div className="bg-white rounded-2xl p-6 shadow-soft h-full border border-gray-100 hover:border-lazo-pink/30 transition-all">
+                <div
+                  key={index}
+                  className="flex-[0_0_100%] min-w-0 md:flex-[0_0_60%] lg:flex-[0_0_50%] pl-4"
+                >
+                  <motion.div
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className={`relative group transition-all duration-500 ${
+                      selectedIndex === index ? 'scale-100' : 'scale-95 opacity-70'
+                    }`}
+                  >
+                    <div className="bg-white rounded-2xl p-8 shadow-soft h-full border border-gray-100 hover:border-lazo-pink/30 transition-all">
                       <div className="h-12 mb-6 opacity-80">
                         <img
                           src={article.logo}
@@ -84,13 +123,28 @@ const PressSection = () => {
                         "{article.quote}"
                       </blockquote>
                     </div>
-                  </div>
-                </CarouselItem>
+                  </motion.div>
+                </div>
               ))}
-            </CarouselContent>
-          </Carousel>
+            </div>
+          </div>
+
+          <div className="flex justify-center gap-3 mt-8">
+            {scrollSnaps.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollTo(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === selectedIndex
+                    ? 'w-8 bg-lazo-bordeaux shadow-sm'
+                    : 'w-2 bg-lazo-bordeaux/30 hover:bg-lazo-bordeaux/50'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
