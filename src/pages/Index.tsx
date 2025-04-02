@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import HeroSection from '@/components/HeroSection';
 import CheckersSection from '@/components/CheckersSection';
@@ -14,10 +15,10 @@ import SoulessjayBanner from '@/components/SoulessjayBanner';
 const Index = () => {
   useEffect(() => {
     // Set title and meta tags
-    document.title = 'Lazo - Loyalty Test';
+    document.title = 'Getlazo - Test your partner\'s loyalty with one click';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', "Test your partner's loyalty anonymously");
+      metaDescription.setAttribute('content', "Wondering if they're loyal? Getlazo connects you with real agents who discreetly test your partner's fidelity on social media.");
     }
 
     // Handle navbar scroll effect
