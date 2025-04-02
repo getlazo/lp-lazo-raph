@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 import { Youtube } from 'lucide-react';
 
@@ -39,7 +40,7 @@ const SoulessjayBanner = () => {
                   <div className="relative w-full h-full rounded-full overflow-hidden border border-white shadow-[0_4px_12px_-2px_rgba(0,0,0,0.12)]">
                     <img
                       src="/images/Souless.png"
-                      alt="Soulessjayy"
+                      alt="Soulessjayy discussing Lazo loyalty test"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -54,7 +55,7 @@ const SoulessjayBanner = () => {
                     <Youtube className="w-4 h-4 md:w-5 md:h-5 text-red-600 flex-shrink-0" />
                   </div>
                   <p className="text-base md:text-lg text-gray-600 font-light italic leading-snug">
-                    "It has never been this easy to test your partner's loyalty!"
+                    "Lazo's loyalty test has never made it easier to verify your partner's fidelity!"
                   </p>
                 </div>
               </div>

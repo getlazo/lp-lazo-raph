@@ -15,11 +15,28 @@ import SoulessjayBanner from '@/components/SoulessjayBanner';
 const Index = () => {
   useEffect(() => {
     // Set title and meta tags
-    document.title = 'Getlazo - Test your partner\'s loyalty with one click';
+    document.title = 'Getlazo - #1 Loyalty Test App | Test Your Partner\'s Fidelity';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', "Wondering if they're loyal? Getlazo connects you with real agents who discreetly test your partner's fidelity on social media.");
+      metaDescription.setAttribute('content', "Lazo: The #1 Loyalty Test service. Wondering if they're loyal? Getlazo connects you with expert agents who discreetly test your partner's fidelity through social media.");
     }
+
+    // Add structured data for better SEO
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      'name': 'Lazo Loyalty Test',
+      'description': 'Discreet loyalty testing service to verify partner fidelity',
+      'url': 'https://getlazo.app',
+      'provider': {
+        '@type': 'Organization',
+        'name': 'Getlazo',
+        'url': 'https://getlazo.app'
+      }
+    });
+    document.head.appendChild(script);
 
     // Handle navbar scroll effect
     const handleScroll = () => {
@@ -34,11 +51,21 @@ const Index = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      // Remove the script when component unmounts
+      const jsonLdScript = document.querySelector('script[type="application/ld+json"]');
+      if (jsonLdScript) {
+        document.head.removeChild(jsonLdScript);
+      }
+    };
   }, []);
 
   return (
     <div className="relative min-h-screen bg-white">
+      {/* SEO-optimized hidden heading for search engines */}
+      <h1 className="sr-only">Lazo - The Ultimate Loyalty Test Service | Test Your Partner's Fidelity Discreetly</h1>
+      
       <BackgroundShapes />
       <Navbar />
       

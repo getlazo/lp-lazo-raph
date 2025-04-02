@@ -1,16 +1,17 @@
+
 import { motion } from 'framer-motion';
 import { EyeOff, Lock, CheckCircle2, ChevronDown } from 'lucide-react';
 
 const trustFeatures = [
   {
     icon: EyeOff,
-    text: "100% Discreet",
+    text: "100% Discreet Loyalty Test",
     color: "from-violet-400 to-violet-500",
     animationDelay: 0
   },
   {
     icon: Lock,
-    text: "Secure",
+    text: "Secure Lazo Service",
     color: "from-blue-400 to-blue-500",
     animationDelay: 1.5
   },
@@ -55,7 +56,7 @@ const HeroSection = () => {
                 <div className="absolute inset-5 bg-white/90 backdrop-blur-sm rounded-full shadow-2xl overflow-hidden border border-white/30">
                   <img
                     src="/images/hero-example.jpg"
-                    alt="Woman using phone"
+                    alt="Lazo loyalty test service in action"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -70,10 +71,10 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-lazo-bordeaux mb-4 leading-tight">
-                Discover the Truth about
+              <h2 className="text-lazo-bordeaux mb-4 leading-tight">
+                Lazo: The #1 Loyalty Test for
                 <span className="gradient-text block">Your Relationship</span>
-              </h1>
+              </h2>
             </motion.div>
 
             <motion.div
@@ -104,7 +105,7 @@ const HeroSection = () => {
                 href="#how-it-works"
                 className="inline-flex items-center text-gray-600 hover:text-lazo-bordeaux transition-colors duration-300"
               >
-                <span className="text-lg">How it Works</span>
+                <span className="text-lg">How Lazo Loyalty Test Works</span>
                 <ChevronDown className="w-5 h-5 ml-2 animate-bounce" />
               </a>
             </motion.div>
@@ -115,7 +116,7 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-gray-700 max-w-2xl mx-auto"
             >
-              Lazo helps you make informed decisions about your relationship with our experts in loyalty testing.
+              Lazo Loyalty Test helps you make informed decisions about your relationship with our experts in discreet fidelity testing.
             </motion.p>
 
             {/* Trust Features - Centered with unified animation */}
