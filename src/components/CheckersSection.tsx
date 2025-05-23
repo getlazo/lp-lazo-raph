@@ -166,7 +166,6 @@ const CheckersSection = () => {
                     <div className="aspect-[6/7] overflow-hidden rounded-2xl shadow-2xl relative">
                       <a
                         href={checker.providerUrl}
-                        target="_blank"
                         rel="noopener noreferrer"
                         className="block w-full h-full"
                       >
@@ -242,7 +241,6 @@ const CheckersSection = () => {
         <div className="mt-12 flex justify-center">
           <motion.a 
             href="https://www.getlazo.app/providers" 
-            target="_blank" 
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

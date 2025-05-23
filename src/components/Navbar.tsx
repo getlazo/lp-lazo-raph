@@ -38,7 +38,6 @@ const Navbar = () => {
         
         <a 
           href="https://www.getlazo.app/providers"
-          target="_blank"
           rel="noopener noreferrer"
           className="hidden md:block px-5 py-2 rounded-full bg-lazo-bordeaux text-white text-sm font-medium transition-all hover:bg-lazo-bordeaux-light"
         >
@@ -80,7 +79,6 @@ const Navbar = () => {
             </a>
             <a 
               href="https://www.getlazo.app/providers"
-              target="_blank"
               rel="noopener noreferrer"
               className="w-full py-3 rounded-full bg-lazo-bordeaux text-white text-sm font-medium text-center"
               onClick={() => setIsOpen(false)}

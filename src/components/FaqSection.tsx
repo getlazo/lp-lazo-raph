@@ -108,7 +108,6 @@ const FaqSection = () => {
             <p className="text-gray-600 mb-4">Still have questions?</p>
             <a 
               href="https://www.getlazo.app/contact-us" 
-              target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center py-3 px-6 rounded-full bg-lazo-bordeaux text-white font-medium transition-all hover:bg-lazo-bordeaux-light"
             >

@@ -152,7 +152,6 @@ const HowItWorksSection = () => {
         >
           <a
             href="https://www.getlazo.app/providers"
-            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-6 md:px-8 py-4 text-white bg-lazo-bordeaux rounded-full hover:bg-lazo-bordeaux-light transition-all transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
           >
