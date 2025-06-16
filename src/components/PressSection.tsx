@@ -8,22 +8,26 @@ const pressArticles = [
   {
     source: "Sky News",
     quote: "Lazo just created a database of people that are willing to help.",
-    logo: "/press-logos/sky-news.svg"
+    logo: "/press-logos/sky-news.svg",
+    link: "https://news.sky.com/story/loyalty-testers-will-now-catch-out-your-cheating-boyfriend-for-a-fee-13225869"
   },
   {
     source: "Business Insider",
     quote: "Unfortunately, a lot of the girls who come to Lazo are usually right about their cheating boyfriends.",
-    logo: "/press-logos/business-insider.svg"
+    logo: "/press-logos/business-insider.svg",
+    link: "https://www.businessinsider.com/loyalty-test-boyfriend-lazo-questions-pay-2024-6"
   },
   {
     source: "Mirror",
     quote: "If you can't be loyal, then you shouldn't be in that relationship.",
-    logo: "/press-logos/mirror.svg"
+    logo: "/press-logos/mirror.svg",
+    link: "https://www.mirror.co.uk/news/us-news/loyalty-testing-app-sees-attractive-33831409"
   },
   {
     source: "9Honey",
     quote: "Lazo gives those in doubt the tools to test their partner's loyalty with less risk of being caught.",
-    logo: "/press-logos/9honey.svg"
+    logo: "/press-logos/9honey.svg",
+    link: "https://honey.nine.com.au/latest/loyalty-test-online-tiktok-cheating-trend-exclusive/44caca5a-f48f-4a12-971f-d031a08c362e"
   }
 ];
 
@@ -95,7 +99,7 @@ const PressSection = () => {
               {pressArticles.map((article, index) => (
                 <div
                   key={index}
-                  className="flex-[0_0_100%] min-w-0 md:flex-[0_0_60%] lg:flex-[0_0_50%] pl-4"
+                  className="flex-[0_0_100%] min-w-0 max-[0_0_60%] lg:flex-[0_0_50%] pl-4"
                 >
                   <motion.div
                     initial={{ scale: 0.95, opacity: 0 }}
@@ -105,24 +109,18 @@ const PressSection = () => {
                       selectedIndex === index ? 'scale-100' : 'scale-95 opacity-70'
                     }`}
                   >
-                    <div className="bg-white rounded-2xl p-8 shadow-soft h-full border border-gray-100 hover:border-lazo-pink/30 transition-all">
-                      <div className="h-12 mb-6 opacity-80">
-                        <img
-                          src={article.logo}
-                          alt={`${article.source} logo`}
-                          className="h-full object-contain"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                            console.error(`Failed to load logo: ${article.logo}`);
-                          }}
-                        />
-                        <div className="text-xl font-bold text-gray-800">{article.source}</div>
+                    <a
+                      href={article.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block hover:opacity-90 transition-opacity"
+                    >
+                      <div className="p-4 bg-white rounded-xl shadow-md text-center">
+                        <img src={article.logo} alt={`${article.source} logo`} className="h-8 mx-auto mb-3" />
+                        <p className="text-sm italic">"{article.quote}"</p>
+                        <p className="text-xs mt-2 text-gray-500 font-semibold">{article.source}</p>
                       </div>
-                      <blockquote className="text-gray-600 italic text-lg mb-4">
-                        "{article.quote}"
-                      </blockquote>
-                    </div>
+                    </a>
                   </motion.div>
                 </div>
               ))}
@@ -149,4 +147,4 @@ const PressSection = () => {
   );
 };
 
-export default PressSection; 
+export default PressSection;
