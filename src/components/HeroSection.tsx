@@ -1,6 +1,6 @@
-
 import { motion } from 'framer-motion';
-import { EyeOff, Lock, CheckCircle2, ChevronDown } from 'lucide-react';
+import { EyeOff, Lock, CheckCircle2, ChevronDown, Volume2, VolumeX } from 'lucide-react';
+import { useState } from 'react';
 
 const trustFeatures = [
   {
@@ -24,44 +24,50 @@ const trustFeatures = [
 ];
 
 const HeroSection = () => {
+  const [isMuted, setIsMuted] = useState(true);
+
+  const toggleSound = () => {
+    setIsMuted(!isMuted);
+  };
+
   return (
     <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden bg-gradient-to-b from-white to-lazo-pink/5">
       <div className="container relative z-10">
         <div className="flex flex-col items-center space-y-8">
-          {/* Hero Image Bubble - Optimized for faster appearance */}
+          {/* Hero Video - Mobile format, fixed position */}
           <motion.div
             initial={{ opacity: 0.8, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="relative w-full max-w-[300px] mx-auto"
+            className="relative w-full max-w-[280px] mx-auto"
           >
-            <div className="relative aspect-square">
-              {/* Simplified background bubble with reduced blur for better performance */}
-              <div className="absolute inset-0 bg-gradient-to-br from-lazo-pink/30 to-lazo-bordeaux/20 rounded-full blur-xl" />
+            <div className="relative aspect-[9/16]">
+              {/* Background bubble effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-lazo-pink/30 to-lazo-bordeaux/20 rounded-3xl blur-xl" />
               
-              {/* Optimized floating animation with simplified parameters */}
-              <motion.div
-                animate={{
-                  y: [0, -8, 0],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="relative w-full h-full will-change-transform"
-              >
-                {/* Image container with optimized glass effect */}
-                <div className="absolute inset-5 bg-white/90 backdrop-blur-[5px] rounded-full shadow-xl overflow-hidden border border-white/30">
-                  <img
-                    src="/images/hero-example.jpg"
-                    alt="Lazo loyalty test service in action"
+              {/* Video container with glass effect */}
+              <div className="absolute inset-2 bg-white/90 backdrop-blur-[5px] rounded-2xl shadow-xl overflow-hidden border border-white/30">
+                <video
+                  src="/video/final version Lazo motion video demo .mov"
+                  autoPlay
+                  loop
+                  muted={isMuted}
+                  playsInline
                     className="w-full h-full object-cover"
-                    loading="eager"
-                    fetchPriority="high"
-                  />
+                />
+                
+                {/* Sound control button - Instagram style */}
+                <button
+                  onClick={toggleSound}
+                  className="absolute bottom-3 right-3 w-8 h-8 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                >
+                  {isMuted ? (
+                    <VolumeX className="w-4 h-4 text-white" />
+                  ) : (
+                    <Volume2 className="w-4 h-4 text-white" />
+                  )}
+                </button>
                 </div>
-              </motion.div>
             </div>
           </motion.div>
 
