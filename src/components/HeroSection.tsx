@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import { EyeOff, Lock, CheckCircle2, ChevronDown, Volume2, VolumeX } from 'lucide-react';
-import { useState } from 'react';
+import { EyeOff, Lock, CheckCircle2, ChevronDown, Volume2, VolumeX, Play, Pause } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
 
 const trustFeatures = [
   {
@@ -25,10 +25,67 @@ const trustFeatures = [
 
 const HeroSection = () => {
   const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [showControls, setShowControls] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const toggleSound = () => {
     setIsMuted(!isMuted);
   };
+
+  const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+    }
+  };
+
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (videoRef.current && duration > 0) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickPosition = (e.clientX - rect.left) / rect.width;
+      const newTime = clickPosition * duration;
+      videoRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.addEventListener('timeupdate', handleTimeUpdate);
+      video.addEventListener('loadedmetadata', handleLoadedMetadata);
+      
+      return () => {
+        video.removeEventListener('timeupdate', handleTimeUpdate);
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      };
+    }
+  }, []);
 
   return (
     <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden bg-gradient-to-b from-white to-lazo-pink/5">
@@ -46,20 +103,91 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-lazo-pink/30 to-lazo-bordeaux/20 rounded-3xl blur-xl" />
               
               {/* Video container with glass effect */}
-              <div className="absolute inset-2 bg-white/90 backdrop-blur-[5px] rounded-2xl shadow-xl overflow-hidden border border-white/30">
+              <div 
+                className="absolute inset-2 bg-white/90 backdrop-blur-[5px] rounded-2xl shadow-xl overflow-hidden border border-white/30 group"
+                onMouseEnter={() => setShowControls(true)}
+                onMouseLeave={() => setShowControls(false)}
+              >
                 <video
+                  ref={videoRef}
                   src="/video/final version Lazo motion video demo .mov"
                   autoPlay
                   loop
                   muted={isMuted}
                   playsInline
-                    className="w-full h-full object-cover"
+                  className="w-full h-full object-cover cursor-pointer"
+                  onClick={togglePlayPause}
+                  onTimeUpdate={handleTimeUpdate}
+                  onLoadedMetadata={handleLoadedMetadata}
                 />
                 
-                {/* Sound control button - Instagram style */}
+                {/* Video Controls Overlay - Click anywhere for play/pause */}
+                <div 
+                  className={`absolute inset-0 transition-opacity duration-300 cursor-pointer ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0'}`}
+                  onClick={togglePlayPause}
+                >
+                  {/* Play/Pause Button - Center - Visual indicator only */}
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-200 pointer-events-none">
+                    {isPlaying ? (
+                      <Pause className="w-8 h-8 text-white ml-1" />
+                    ) : (
+                      <Play className="w-8 h-8 text-white ml-1" />
+                    )}
+                  </div>
+
+                  {/* Bottom Controls Bar */}
+                  <div 
+                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                                         {/* Progress Bar */}
+                     <div className="mb-2">
+                       <div 
+                         className="h-1 bg-white/30 rounded-full cursor-pointer hover:h-1.5 transition-all duration-200"
+                         onClick={(e) => {
+                           e.stopPropagation();
+                           handleProgressClick(e);
+                         }}
+                       >
+                        <div 
+                          className="h-full bg-white rounded-full transition-all duration-100"
+                          style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Controls Row */}
+                    <div className="flex items-center justify-between">
+                      {/* Time Display */}
+                      <span className="text-white text-xs font-medium">
+                        {formatTime(currentTime)} / {formatTime(duration)}
+                      </span>
+
+                                             {/* Sound Control */}
+                       <button
+                         onClick={(e) => {
+                           e.stopPropagation();
+                           toggleSound();
+                         }}
+                         className="w-8 h-8 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                       >
+                        {isMuted ? (
+                          <VolumeX className="w-4 h-4 text-white" />
+                        ) : (
+                          <Volume2 className="w-4 h-4 text-white" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sound control button - Always visible when controls are not shown */}
                 <button
-                  onClick={toggleSound}
-                  className="absolute bottom-3 right-3 w-8 h-8 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleSound();
+                  }}
+                  className={`absolute bottom-3 right-3 w-8 h-8 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 ${showControls || !isPlaying ? 'opacity-0' : 'opacity-100'}`}
                 >
                   {isMuted ? (
                     <VolumeX className="w-4 h-4 text-white" />
@@ -67,7 +195,7 @@ const HeroSection = () => {
                     <Volume2 className="w-4 h-4 text-white" />
                   )}
                 </button>
-                </div>
+              </div>
             </div>
           </motion.div>
 
